@@ -1,0 +1,14 @@
+---
+- name: Lire config CSR
+  hosts: csr1000
+  gather_facts: no
+  tasks:
+    - name: Sauvegarder config
+      cisco.ios.ios_command:
+        commands: show running-config
+      register: config
+
+    - name: Sauvegarder dans fichier
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: ./config_csr.txt
